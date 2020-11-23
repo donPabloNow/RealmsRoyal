@@ -1,4 +1,4 @@
-Fpackage protocol;
+package protocol;
 syntax = "proto3";
 
 message Geometry {

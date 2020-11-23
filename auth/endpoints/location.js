@@ -1,107 +1,108 @@
-var { body, param, validationResult } = require('express-validator');
-var multer = require('multer');
-var Location = require('../models/location');
-var Server = require('../models/server');
-var User = require('../models/user');
+const { body, param, validationResult } = require('express-validator');
+const multer = require('multer');
+const Location = require('../models/location');
+const Server = require('../models/server');
+const User = require('../models/user');
 
 module.exports = (app) => {
-        var upload = multer({
-            limits: { fileSize: 1048576 },
-            storage: multer.memoryStorage(),
-        });
+  const upload = multer({
+    limits: { fileSize: 1048576 },
+    storage: multer.memoryStorage(),
+  });
 
-        app.get(
-            '/locations',
-            Location.list({ filter: 'latest' })
-        );
+  app.get(
+    '/locations',
+    Location.list({ filter: 'latest' })
+  );
 
-        app.post(
-            '/locations',
-            User.authenticate,
-            upload.single('photo'),
-            body('server')
-            .isMongoId(),
-            body('positionX')
-            .isInt()
-            .toInt(),
-            body('positionY')
-            .isInt()
-            .toInt(),
-            body('positionZ')
-            .isInt()
-            .toInt(),
-            body('rotation')
-            .isFloat()
-            .toFloat(),
-            (req, res) => {
-                if (!req.file ||
-                    req.file.mimetype !== 'image/jpeg' ||
-                    !validationResult(req).isEmpty()
-                ) {
-                    res.status(422).end();
-                    return;
-                }
-                Server
-                    .findById(req.body.server)
-                    .select('_id')
-                    .then((server) => {
-                        if (!server) {
-                            throw new Error();
-                        }
-                        var location = new Location({
-                            photo: req.file.buffer,
-                            position: {
-                                x: req.body.positionX,
-                                y: req.body.positionY,
-                                z: req.body.positionZ,
-                            },
-                            rotation: req.body.rotation,
-                            server: server._id,
-                            user: req.user._id,
-                        });
-                        return location
-                            .save()
-                            .then(() => (
-                                res.json({
-                                    _id: location._id,
-                                    position: location.position,
-                                    rotation: location.rotation,
-                                    server: location.server,
-                                })
-                            ));
-                    })
-                    .catch(() => res.status(400).end());
-            }
-        );
+  app.post(
+    '/locations',
+    User.authenticate,
+    upload.single('photo'),
+    body('server')
+      .isMongoId(),
+    body('positionX')
+      .isInt()
+      .toInt(),
+    body('positionY')
+      .isInt()
+      .toInt(),
+    body('positionZ')
+      .isInt()
+      .toInt(),
+    body('rotation')
+      .isFloat()
+      .toFloat(),
+    (req, res) => {
+      if (
+        !req.file
+        || req.file.mimetype !== 'image/jpeg'
+        || !validationResult(req).isEmpty()
+      ) {
+        res.status(422).end();
+        return;
+      }
+      Server
+        .findById(req.body.server)
+        .select('_id')
+        .then((server) => {
+          if (!server) {
+            throw new Error();
+          }
+          const location = new Location({
+            photo: req.file.buffer,
+            position: {
+              x: req.body.positionX,
+              y: req.body.positionY,
+              z: req.body.positionZ,
+            },
+            rotation: req.body.rotation,
+            server: server._id,
+            user: req.user._id,
+          });
+          return location
+            .save()
+            .then(() => (
+              res.json({
+                _id: location._id,
+                position: location.position,
+                rotation: location.rotation,
+                server: location.server,
+              })
+            ));
+        })
+        .catch(() => res.status(400).end());
+    }
+  );
 
-        app.get(
-                '/location/:id',
-                param('id')
-                .isMongoId(),
-                (req, res) => {
-                    if (!validationResult(req).isEmpty()) {
-                        res.status(422).end();
-                        return;
-                    }
-                    Location
-                        .findById(req.params.id)
-                        .select('createdAt position server user')
-                        .populate('server', 'name')
-                        .populate('user', 'name')
-                        .then((location) => {
-                                if (!location) {
-                                    res.status(404).end();
-                                    return;
-                                }
-                                var {
-                                    _id,
-                                    createdAt,
-                                    position: { x, y, z },
-                                    server: { name: server },
-                                    user: { name: user },
-                                } = location;
-                                var leadingZero = (v) => (v.length < 2 ? `0${v}` : v);
-                                var date = `${createdAt.getFullYear()}/${leadingZero(`${createdAt.getMonth() + 1}`)}/${leadingZero(`${createdAt.getDate()}`)}`;
+  app.get(
+    '/location/:id',
+    param('id')
+      .isMongoId(),
+    (req, res) => {
+      if (!validationResult(req).isEmpty()) {
+        res.status(422).end();
+        return;
+      }
+      Location
+        .findById(req.params.id)
+        .select('createdAt position server user')
+        .populate('server', 'name')
+        .populate('user', 'name')
+        .then((location) => {
+          if (!location) {
+            res.status(404).end();
+            return;
+          }
+          const {
+            _id,
+            createdAt,
+            position: { x, y, z },
+            server: { name: server },
+            user: { name: user },
+          } = location;
+          const leadingZero = (v) => (v.length < 2 ? `0${v}` : v);
+          const date = `${createdAt.getFullYear()}/${leadingZero(`${createdAt.getMonth() + 1}`)}/${leadingZero(`${createdAt.getDate()}`)}`;
           res
             .set('Cache-Control', 'public, max-age=31536000')
             .type('text/html')

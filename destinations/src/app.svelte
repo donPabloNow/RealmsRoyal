@@ -5,12 +5,12 @@
 	import Servers from './servers.svelte';
 	import User from './user.svelte';
 
-	var server;
-	var user;
+	let server;
+	let user;
 
-	var onLocationChange = () => {
-		var params = document.location.hash.substr(2).split('/').reduce((keys, param) => {
-      var [key, value] = param.split(':');
+	const onLocationChange = () => {
+		const params = document.location.hash.substr(2).split('/').reduce((keys, param) => {
+      const [key, value] = param.split(':');
       keys[key] = decodeURIComponent(value);
       return keys;
 		}, {});
@@ -23,7 +23,7 @@
 
 <app>
 	<nav>
-		<h2>RealmsRoyal - DESTINATIONS</h2>
+		<h2>blocks - DESTINATIONS</h2>
 		{#if server || user}
 			<actions>
 				<a href="#/">&lt; Servers</a>

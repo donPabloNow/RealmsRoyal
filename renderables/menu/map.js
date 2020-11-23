@@ -1,63 +1,63 @@
 // Map UI
 
-var Map = ({
-        menu,
-        pages,
-        width,
-        height,
-    }) => {
-        var image = new Image();
-        image.crossOrigin = 'anonymous';
-        image.onload = () => {
-            image.loaded = true;
-            if (menu.page.id === pages.map) {
-                menu.draw();
-            }
-        };
-        var state = {
-            setChunk({ x, z }) {
-                state.chunk = { x, z };
-                delete image.loaded;
-                if (menu.page.id === pages.map) {
-                    loadImage(); // eslint-disable-line no-use-before-define
-                }
-            },
-            setConnectedServer(url) {
-                var { servers } = state;
-                if (!servers) {
-                    return;
-                }
-                var index = servers.findIndex(({ url: server }) => (server === url));
-                if (index === -1) {
-                    index = servers.length;
-                    servers.push({
-                        name: new URL(url).hostname,
-                        url,
-                    });
-                }
-                state.connectedServer = index;
-                setDisplayedServer(state.connectedServer); // eslint-disable-line no-use-before-define
-            },
-        };
-        var loadImage = () => {
-                var {
-                    chunk,
-                    connectedServer,
-                    displayedServer,
-                    servers,
-                } = state;
-                if (!servers) {
-                    return;
-                }
-                var isConnected = connectedServer === displayedServer;
-                image.src = `${servers[displayedServer].url}map${isConnected ? `/@${chunk.x},${chunk.z}` : ''}`;
+const Map = ({
+  menu,
+  pages,
+  width,
+  height,
+}) => {
+  const image = new Image();
+  image.crossOrigin = 'anonymous';
+  image.onload = () => {
+    image.loaded = true;
+    if (menu.page.id === pages.map) {
+      menu.draw();
+    }
   };
-  var connectToServer = () => {
-    var {
+  const state = {
+    setChunk({ x, z }) {
+      state.chunk = { x, z };
+      delete image.loaded;
+      if (menu.page.id === pages.map) {
+        loadImage(); // eslint-disable-line no-use-before-define
+      }
+    },
+    setConnectedServer(url) {
+      const { servers } = state;
+      if (!servers) {
+        return;
+      }
+      let index = servers.findIndex(({ url: server }) => (server === url));
+      if (index === -1) {
+        index = servers.length;
+        servers.push({
+          name: new URL(url).hostname,
+          url,
+        });
+      }
+      state.connectedServer = index;
+      setDisplayedServer(state.connectedServer); // eslint-disable-line no-use-before-define
+    },
+  };
+  const loadImage = () => {
+    const {
+      chunk,
+      connectedServer,
       displayedServer,
       servers,
     } = state;
-    var [/* teleport */, connect] = buttons; // eslint-disable-line no-use-before-define
+    if (!servers) {
+      return;
+    }
+    const isConnected = connectedServer === displayedServer;
+    image.src = `${servers[displayedServer].url}map${isConnected ? `/@${chunk.x},${chunk.z}` : ''}`;
+  };
+  const connectToServer = () => {
+    const {
+      displayedServer,
+      servers,
+    } = state;
+    const [/* teleport */, connect] = buttons; // eslint-disable-line no-use-before-define
     connect.isVisible = false;
     state.connectedServer = displayedServer;
     if (menu.page.id === pages.map) {
@@ -65,15 +65,15 @@ var Map = ({
     }
     menu.world.connect(servers[displayedServer].url);
   };
-  var setDisplayedServer = (index) => {
-    var {
+  const setDisplayedServer = (index) => {
+    const {
       chunk,
       connectedServer,
       servers,
     } = state;
     /* eslint-disable no-use-before-define */
-    var [/* teleport */, connect] = buttons;
-    var [name] = labels;
+    const [/* teleport */, connect] = buttons;
+    const [name] = labels;
     /* eslint-enable no-use-before-define */
     connect.isVisible = index !== connectedServer;
     name.text = servers[index].name;
@@ -83,8 +83,8 @@ var Map = ({
       loadImage();
     }
   };
-  var requestTeleport = () => {
-    var {
+  const requestTeleport = () => {
+    const {
       chunk,
       connectedServer,
       displayedServer,
@@ -97,10 +97,10 @@ var Map = ({
     ) {
       return;
     }
-    var radius = 8;
-    var size = 16;
-    var length = ((radius * 2) + 1) * size;
-    var origin = {
+    const radius = 8;
+    const size = 16;
+    const length = ((radius * 2) + 1) * size;
+    const origin = {
       x: (chunk.x * size) + (size * 0.5) - (length * 0.5),
       z: (chunk.z * size) + (size * 0.5) - (length * 0.5),
     };
@@ -112,7 +112,7 @@ var Map = ({
       },
     });
   };
-  var buttons = [
+  const buttons = [
     {
       x: 0,
       y: 0,
@@ -137,7 +137,7 @@ var Map = ({
       width: width * 0.075,
       height: width * 0.075,
       onPointer: () => {
-        var { displayedServer, servers } = state;
+        const { displayedServer, servers } = state;
         if (servers) {
           setDisplayedServer(
             (displayedServer > 0 ? displayedServer : servers.length) - 1
@@ -152,7 +152,7 @@ var Map = ({
       width: width * 0.075,
       height: width * 0.075,
       onPointer: () => {
-        var { displayedServer, servers } = state;
+        const { displayedServer, servers } = state;
         if (servers) {
           setDisplayedServer(
             (displayedServer + 1) % servers.length
@@ -161,7 +161,7 @@ var Map = ({
       },
     },
   ];
-  var labels = [
+  const labels = [
     {
       text: '',
       font: '700 30px monospace',
@@ -169,9 +169,9 @@ var Map = ({
       y: height * 0.94,
     },
   ];
-  var graphics = [
+  const graphics = [
     ({ ctx }) => {
-      var { chunk } = state;
+      const { chunk } = state;
       ctx.fillStyle = '#555';
       ctx.fillRect(0, 0, width, height);
       if (!chunk) {
@@ -185,17 +185,17 @@ var Map = ({
       ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      var radius = 8;
-      var size = ((radius * 2) + 1);
-      var ratio = width / size;
+      const radius = 8;
+      const size = ((radius * 2) + 1);
+      const ratio = width / size;
       ctx.font = `${ratio * 0.3}px monospace`;
-      for (var x = 2; x < size; x += 3) {
+      for (let x = 2; x < size; x += 3) {
         ctx.fillText(
           `${(chunk.x - radius) + x}`,
           (x + 0.5) * ratio, ratio * 0.5
         );
       }
-      for (var z = 2; z < size; z += 3) {
+      for (let z = 2; z < size; z += 3) {
         ctx.fillText(
           `${(chunk.z - radius) + z}`,
           width - 1 - (ratio * 0.5), (z + 0.5) * ratio
@@ -221,6 +221,6 @@ var Map = ({
   };
 };
 
-Map.servers = 'https://realmsroyal.obeyi.com/auth/servers';
+Map.servers = 'https://blocks.gatunes.com/auth/servers';
 
 export default Map;

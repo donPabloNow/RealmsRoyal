@@ -1,9 +1,9 @@
-var block = require('./block');
+const block = require('./block');
 
 module.exports = {
-    ...block,
-    name: 'Dirt',
-    textures: {
-        block: 'block.js',
-    },
+  ...block,
+  name: 'Dirt',
+  textures: {
+    block: 'block.js',
+  },
 };

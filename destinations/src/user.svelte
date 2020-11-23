@@ -1,7 +1,7 @@
 <script>
 	import { fetchUser } from './auth.js';
 	import Skin from './skin.svelte';
-	export var id;
+	export let id;
 </script>
 
 {#await fetchUser(id) then user}

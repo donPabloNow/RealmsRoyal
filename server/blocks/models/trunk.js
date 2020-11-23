@@ -1,9 +1,9 @@
-var block = require('./block');
+const block = require('./block');
 
 module.exports = {
-    ...block,
-    name: 'Trunk',
-    textures: {
-        block: 'trunk.js',
-    },
+  ...block,
+  name: 'Trunk',
+  textures: {
+    block: 'trunk.js',
+  },
 };

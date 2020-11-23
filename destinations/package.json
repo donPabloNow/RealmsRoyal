@@ -1,7 +1,7 @@
 {
-  "name": "BlockRoyal",
-  "description": "BlockRoyal online multiplayer block royal",
-  "author": "don Pablo",
+  "name": "blocks-destinations",
+  "description": "blocks destinations web ui",
+  "author": "Daniel Esteban Nombela",
   "version": "1.0.0",
   "license": "MIT",
   "private": true,

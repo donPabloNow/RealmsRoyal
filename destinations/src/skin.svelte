@@ -2,13 +2,13 @@
   import { onDestroy, onMount } from 'svelte';
 	import { getUserSkin } from './auth.js';
   
-  export var user;
-  export var width;
-  export var height;
-  var canvas;
-  var texture = new Image();
+  export let user;
+  export let width;
+  export let height;
+  let canvas;
+  const texture = new Image();
 	onMount(() => {
-		var ctx = canvas.getContext('2d');
+		const ctx = canvas.getContext('2d');
 		ctx.imageSmoothingEnabled = false;
     texture.onload = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
