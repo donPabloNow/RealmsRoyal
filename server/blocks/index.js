@@ -1,9 +1,9 @@
 module.exports = [
-    'dirt',
-    'glass',
-    'light',
-    'water',
-    'sapling',
-    'trunk',
-    'leaves',
+  'dirt',
+  'glass',
+  'light',
+  'water',
+  'sapling',
+  'trunk',
+  'leaves',
 ];

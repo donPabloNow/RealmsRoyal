@@ -1,17 +1,17 @@
 // Settings UI
 
-const Settings = ({
+var Settings = ({
     menu,
     pages,
     width,
     height,
 }) => {
-    const state = {
+    var state = {
         renderRadius: (
             parseInt(localStorage.getItem('blocks::renderRadius') || 0, 10) || 8
         ),
         setRenderRadius(radius) {
-            const [
+            var [
                 /* teleport */
                 ,
                 /* fly */
@@ -23,26 +23,26 @@ const Settings = ({
             delete low.background;
             delete mid.background;
             delete high.background;
-            const options = { 8: low, 12: mid, 16: high };
+            var options = { 8: low, 12: mid, 16: high };
             options[radius].background = '#393';
             if (menu.page.id === pages.settings) {
                 menu.draw();
             }
         },
     };
-    const setLocomotion = (type) => {
-        const [teleport, fly] = buttons; // eslint-disable-line no-use-before-define
+    var setLocomotion = (type) => {
+        var [teleport, fly] = buttons; // eslint-disable-line no-use-before-define
         delete fly.background;
         delete teleport.background;
-        const options = { fly, teleport };
+        var options = { fly, teleport };
         options[type].background = '#393';
-        const locomotions = { fly: 0, teleport: 1 };
+        var locomotions = { fly: 0, teleport: 1 };
         menu.world.locomotion = locomotions[type];
         if (menu.page.id === pages.settings) {
             menu.draw();
         }
     };
-    const buttons = [{
+    var buttons = [{
             background: '#393',
             label: 'Teleport',
             x: width * 0.0625,
@@ -84,7 +84,7 @@ const Settings = ({
             onPointer: () => menu.world.updateRenderRadius(16),
         },
     ];
-    const labels = [{
+    var labels = [{
             text: 'Locomotion',
             x: width * 0.5,
             y: height * 0.15,

@@ -1,11 +1,11 @@
 <script>
 	import Share from './share.svelte';
 	import Skin from './skin.svelte';
-	export let locations;
-	let current = 0;
-	let location = locations[current];
+	export var locations;
+	var current = 0;
+	var location = locations[current];
 
-	const paginate = (inc) => ({ target }) => {
+	var paginate = (inc) => ({ target }) => {
 		if (target.classList.contains('enabled')) {
 			current += inc;
 			location = locations[current];

@@ -38,8 +38,8 @@ class Room extends Scene {
     }
 
     onBeforeRender({ animation: { delta }, xr }, scene, camera) {
-        const { locomotions } = Room;
-        const {
+        var { locomotions } = Room;
+        var {
             locomotion,
             peers,
             player,
@@ -49,7 +49,7 @@ class Room extends Scene {
         player.onAnimationTick({ delta, camera });
         peers.onAnimationTick({ delta, player });
         player.controllers.forEach((controller) => {
-            const {
+            var {
                 buttons: {
                     backwards,
                     forwards,
@@ -85,7 +85,7 @@ class Room extends Scene {
                 hand.handedness === 'right' &&
                 (forwards || forwardsUp)
             ) {
-                const { hit, points } = CurveCast({
+                var { hit, points } = CurveCast({
                     intersects: translocables,
                     raycaster,
                 });
@@ -103,7 +103,7 @@ class Room extends Scene {
                 hand.handedness === 'right' &&
                 (backwards || forwards || leftwards || rightwards)
             ) {
-                const movement = { x: 0, y: 0, z: 0 };
+                var movement = { x: 0, y: 0, z: 0 };
                 if (backwards) {
                     movement.z = 1;
                 }
@@ -124,7 +124,7 @@ class Room extends Scene {
                 player.disposeWelcome();
             }
             if (trigger || triggerUp) {
-                const hit = raycaster.intersectObjects(ui)[0] || false;
+                var hit = raycaster.intersectObjects(ui)[0] || false;
                 if (hit) {
                     pointer.update({
                         distance: hit.distance,
@@ -148,7 +148,7 @@ class Room extends Scene {
         json,
         signal,
     }) {
-        const {
+        var {
             dom,
             peers,
             player,
@@ -185,7 +185,7 @@ class Room extends Scene {
     }
 
     onMessage({ data }) {
-        let event;
+        var event;
         try {
             event = Room.decode(new Uint8Array(data));
         } catch (e) {
@@ -195,7 +195,7 @@ class Room extends Scene {
     }
 
     connect(url) {
-        const { peers } = this;
+        var { peers } = this;
         if (this.server) {
             this.server.onclose = null;
             this.server.onmessage = null;
@@ -203,16 +203,16 @@ class Room extends Scene {
             if (this.reconnectTimer) {
                 clearTimeout(this.reconnectTimer);
             }
-            const error = document.getElementById('error');
+            var error = document.getElementById('error');
             if (error) {
                 error.parentNode.removeChild(error);
             }
             peers.reset();
         }
-        const socket = new URL(url);
+        var socket = new URL(url);
         socket.protocol = socket.protocol.replace(/http/, 'ws');
         socket.hash = '';
-        const server = new WebSocket(socket.toString());
+        var server = new WebSocket(socket.toString());
         server.binaryType = 'arraybuffer';
         server.sendEvent = (event) => (
             server.send(Room.encode(event))
@@ -221,14 +221,14 @@ class Room extends Scene {
         server.onclose = () => {
             peers.reset();
             if (server.error) {
-                const dialog = document.createElement('div');
+                var dialog = document.createElement('div');
                 dialog.id = 'error';
                 dialog.innerText = server.error;
                 document.body.appendChild(dialog);
                 return;
             }
             if (!this.player.spawn) {
-                const position = this.player.head.position.clone();
+                var position = this.player.head.position.clone();
                 position.y = this.player.position.y;
                 this.player.spawn = {
                     position,
@@ -245,7 +245,7 @@ class Room extends Scene {
         if (buffer[0] === 0x78 && buffer[1] === 0x9c) {
             buffer = Pako.inflate(buffer);
         }
-        const message = protocol.Message.decode(buffer);
+        var message = protocol.Message.decode(buffer);
         message.type = protocol.Message.Type[message.type];
         if (message.json) {
             message.json = JSON.parse(message.json);

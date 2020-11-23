@@ -1,7 +1,7 @@
 import Renderer from './core/renderer.js';
 import World from './core/world.js';
 
-const renderer = new Renderer({
+var renderer = new Renderer({
     dom: {
         chunk: document.getElementById('chunk'),
         enterVR: document.getElementById('enterVR'),

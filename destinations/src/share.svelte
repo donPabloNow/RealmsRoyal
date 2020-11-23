@@ -1,10 +1,10 @@
 <script>
-  const openPopup = (e) => {
+  var openPopup = (e) => {
 		e.preventDefault();
     window.open(e.target.href, '', 'width=640,height=720');
   };
 
-  export let url;
+  export var url;
   $: encoded = encodeURIComponent(url);
 </script>
 <a

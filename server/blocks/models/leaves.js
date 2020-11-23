@@ -1,10 +1,10 @@
-const block = require('./block');
+var block = require('./block');
 
 module.exports = {
-  ...block,
-  name: 'Leaves',
-  isTransparent: true,
-  textures: {
-    block: 'leaves.js',
-  },
+    ...block,
+    name: 'Leaves',
+    isTransparent: true,
+    textures: {
+        block: 'leaves.js',
+    },
 };

@@ -1,15 +1,15 @@
 import { Vector3 } from './three.js';
 
-const maxSteps = 5;
+var maxSteps = 5;
 
-const gravity = new Vector3(0, -1, 0);
-const next = new Vector3();
-const restore = {
+var gravity = new Vector3(0, -1, 0);
+var next = new Vector3();
+var restore = {
     direction: new Vector3(),
     origin: new Vector3(),
 };
-const steps = [...Array(maxSteps + 2)].map(() => new Vector3());
-const WorldUp = new Vector3(0, 1, 0);
+var steps = [...Array(maxSteps + 2)].map(() => new Vector3());
+var WorldUp = new Vector3(0, 1, 0);
 
 // Performs a "curved" raycast
 
@@ -17,14 +17,14 @@ export default function CurveCast({
     intersects,
     raycaster,
 }) {
-    const { far: distance, ray: { direction, origin } } = raycaster;
-    const points = [];
-    let stride = 0.5;
-    let hit = false;
+    var { far: distance, ray: { direction, origin } } = raycaster;
+    var points = [];
+    var stride = 0.5;
+    var hit = false;
     restore.direction.copy(direction);
     restore.origin.copy(origin);
     next.copy(origin);
-    for (let i = 0; i < maxSteps; i += 1) {
+    for (var i = 0; i < maxSteps; i += 1) {
         stride *= 2;
         origin.copy(next);
         points.push(steps[i].copy(origin));

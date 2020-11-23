@@ -1,27 +1,27 @@
-const authService = 'https://realmsroyal.obeyi.com/auth/';
+var authService = 'https://realmsroyal.obeyi.com/auth/';
 
-const leadingZero = (v) => (v.length < 2 ? `0${v}` : v);
+var leadingZero = (v) => (v.length < 2 ? `0${v}` : v);
 
-export const getUserSkin = (id) => (
-  `${authService}user/${id}/skin`
+export var getUserSkin = (id) => (
+    `${authService}user/${id}/skin`
 );
 
-export const fetchLocations = ({ server, user }) => {
-  let endpoint = 'locations';
-  if (server) {
-    endpoint = `server/${server}/locations`;
-  } else if (user) {
-    endpoint = `user/${user}/locations`;
-  }
-  return fetch(`${authService}${endpoint}`)
-    .then((res) => res.json())
-    .then((locations) => locations.map((location) => {
-      const createdAt = new Date(location.createdAt);
-      return {
-        ...location,
-        name: `x:${location.position.x} y:${location.position.y} z:${location.position.z}`,
-        date: (
-          `${createdAt.getFullYear()}/${leadingZero(`${createdAt.getMonth() + 1}`)}/${leadingZero(`${createdAt.getDate()}`)}`
+export var fetchLocations = ({ server, user }) => {
+        var endpoint = 'locations';
+        if (server) {
+            endpoint = `server/${server}/locations`;
+        } else if (user) {
+            endpoint = `user/${user}/locations`;
+        }
+        return fetch(`${authService}${endpoint}`)
+            .then((res) => res.json())
+            .then((locations) => locations.map((location) => {
+                        var createdAt = new Date(location.createdAt);
+                        return {
+                            ...location,
+                            name: `x:${location.position.x} y:${location.position.y} z:${location.position.z}`,
+                            date: (
+                                    `${createdAt.getFullYear()}/${leadingZero(`${createdAt.getMonth() + 1}`)}/${leadingZero(`${createdAt.getDate()}`)}`
           + ` ${leadingZero(`${createdAt.getHours()}`)}:${leadingZero(`${createdAt.getMinutes()}`)}`
         ),
         link: `${authService}location/${location._id}`,
@@ -30,7 +30,7 @@ export const fetchLocations = ({ server, user }) => {
     }));
 };
 
-export const fetchServer = (id) => (
+export var fetchServer = (id) => (
   fetch(`${authService}server/${id}/meta`)
     .then((res) => res.json())
     .then((server) => ({
@@ -40,12 +40,12 @@ export const fetchServer = (id) => (
     }))
 );
 
-export const fetchServers = () => (
+export var fetchServers = () => (
   fetch(`${authService}servers`)
     .then((res) => res.json())
 );
 
-export const fetchUser = (id) => (
+export var fetchUser = (id) => (
   fetch(`${authService}user/${id}/meta`)
     .then((res) => res.json())
     .then((user) => ({

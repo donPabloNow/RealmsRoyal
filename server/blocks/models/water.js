@@ -1,18 +1,18 @@
-Dconst block = require('./block');
+var block = require('./block');
 
-const top = {
+var top = {
     offset: { x: 0, y: 0, z: 2 },
     size: { x: 8, y: 8 },
 };
-const bottom = {
+var bottom = {
     offset: { x: 0, y: 0, z: 0 },
     size: { x: 8, y: 8 },
 };
-const side = {
+var side = {
     offset: { x: 0, y: 0, z: 0 },
     size: { x: 8, y: 6 },
 };
-const faces = [
+var faces = [
     { facing: 'top', ...top },
     { facing: 'bottom', ...bottom },
     { facing: 'south', ...side },
@@ -27,11 +27,11 @@ const faces = [
     return faces;
 }, {});
 
-const fill = {
+var fill = {
     offset: { x: 0, y: 6, z: 8 },
     size: { x: 8, y: 2 },
 };
-const fillFaces = [
+var fillFaces = [
     { facing: 'south', ...fill },
     { facing: 'north', ...fill },
     { facing: 'west', ...fill },
@@ -44,14 +44,14 @@ const fillFaces = [
     return faces;
 }, {});
 
-const isVisible = (type, neighbor) => (!neighbor.hasCulling ||
+var isVisible = (type, neighbor) => (!neighbor.hasCulling ||
     (
         neighbor.isTransparent &&
         type !== neighbor
     )
 );
 
-const empty = [];
+var empty = [];
 module.exports = {
     name: 'Water',
     faces: ({ neighbors, types, voxel }) => {

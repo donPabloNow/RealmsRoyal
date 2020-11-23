@@ -32,16 +32,16 @@ class Player extends Object3D {
         this.direction = new Vector3();
         this.head = new AudioListener();
         this.head.rotation.order = 'YXZ';
-        const onFirstInteraction = () => {
+        var onFirstInteraction = () => {
             document.removeEventListener('mousedown', onFirstInteraction);
-            const { context } = this.head;
+            var { context } = this.head;
             if (context.state === 'suspended') {
                 context.resume();
             }
         };
         document.addEventListener('mousedown', onFirstInteraction);
         this.controllers = [...Array(2)].map((v, i) => {
-            const controller = xr.getController(i);
+            var controller = xr.getController(i);
             this.add(controller);
             controller.buttons = {
                 forwards: false,
@@ -66,11 +66,11 @@ class Player extends Object3D {
                 if (controller.hand) {
                     return;
                 }
-                const hand = new Hand({ handedness });
+                var hand = new Hand({ handedness });
                 controller.hand = hand;
                 controller.gamepad = gamepad;
                 controller.add(hand);
-                const attachments = this.attachments[handedness];
+                var attachments = this.attachments[handedness];
                 if (attachments) {
                     attachments.forEach((attachment) => {
                         controller.add(attachment);
@@ -81,7 +81,7 @@ class Player extends Object3D {
                 if (!controller.hand) {
                     return;
                 }
-                const attachments = this.attachments[controller.hand.handedness];
+                var attachments = this.attachments[controller.hand.handedness];
                 if (attachments) {
                     attachments.forEach((attachment) => {
                         controller.remove(attachment);
@@ -104,7 +104,7 @@ class Player extends Object3D {
     }
 
     onAnimationTick({ camera, delta }) {
-        const {
+        var {
             auxMatrixA: rotation,
             auxVector: vector,
             controllers,
@@ -163,8 +163,8 @@ class Player extends Object3D {
         });
         desktopControls.onAnimationTick({ camera, delta, player: this });
         if (destination) {
-            const step = speed * delta;
-            const distance = destination.distanceTo(position);
+            var step = speed * delta;
+            var distance = destination.distanceTo(position);
             if (distance <= step) {
                 position.copy(destination);
                 delete this.destination;
@@ -175,12 +175,12 @@ class Player extends Object3D {
     }
 
     editSkin(layer) {
-        const { head, session: { skin }, skinEditor } = this;
+        var { head, session: { skin }, skinEditor } = this;
         if (skinEditor) {
             skinEditor.setLayer(layer);
             return;
         }
-        const mesh = new Head();
+        var mesh = new Head();
         mesh.updateTexture(skin, true);
         mesh.setLayer(layer);
         this.add(mesh);
@@ -191,7 +191,7 @@ class Player extends Object3D {
     }
 
     disposeSkinEditor() {
-        const { skinEditor } = this;
+        var { skinEditor } = this;
         if (!skinEditor) {
             return;
         }
@@ -201,7 +201,7 @@ class Player extends Object3D {
     }
 
     saveSkin() {
-        const { session, skinEditor } = this;
+        var { session, skinEditor } = this;
         if (!skinEditor) {
             return;
         }
@@ -211,7 +211,7 @@ class Player extends Object3D {
     }
 
     fly({ delta, direction, movement }) {
-        const {
+        var {
             help,
             auxVector: vector,
             position,
@@ -229,7 +229,7 @@ class Player extends Object3D {
     }
 
     rotate(radians) {
-        const {
+        var {
             auxMatrixA: transform,
             auxMatrixB: matrix,
             head,
@@ -248,7 +248,7 @@ class Player extends Object3D {
     }
 
     translocate(point) {
-        const {
+        var {
             auxDestination: destination,
             direction,
             head,
@@ -269,7 +269,7 @@ class Player extends Object3D {
     }
 
     setLocation(location) {
-        const {
+        var {
             auxVector: offset,
             auxDestination: destination,
             head,
@@ -296,7 +296,7 @@ class Player extends Object3D {
     }
 
     disposeWelcome() {
-        const { welcome } = this;
+        var { welcome } = this;
         if (!welcome) {
             return;
         }

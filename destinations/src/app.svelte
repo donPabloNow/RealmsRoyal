@@ -5,12 +5,12 @@
 	import Servers from './servers.svelte';
 	import User from './user.svelte';
 
-	let server;
-	let user;
+	var server;
+	var user;
 
-	const onLocationChange = () => {
-		const params = document.location.hash.substr(2).split('/').reduce((keys, param) => {
-      const [key, value] = param.split(':');
+	var onLocationChange = () => {
+		var params = document.location.hash.substr(2).split('/').reduce((keys, param) => {
+      var [key, value] = param.split(':');
       keys[key] = decodeURIComponent(value);
       return keys;
 		}, {});

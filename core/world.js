@@ -47,7 +47,7 @@ class World extends Room {
             player: this.player,
             renderer: renderer.renderer,
         });
-        const { attachments } = this.player;
+        var { attachments } = this.player;
         attachments.left = [this.menu];
         attachments.right = [this.photo];
         this.ui.push(
@@ -60,7 +60,7 @@ class World extends Room {
         this.updateRenderRadius(this.menu.settings.renderRadius);
         this.chunks.pool = [...Array(this.renderGrid.length * World.subchunks)].map(() => new Voxels());
 
-        const params = World.getURLParams();
+        var params = World.getURLParams();
         if (params.location) {
             this.player.session
                 .showLocation(params.location)
@@ -74,9 +74,9 @@ class World extends Room {
     }
 
     goToLocation({ server, position, rotation }) {
-        const { scale } = World;
-        const { player } = this;
-        const spawn = {
+        var { scale } = World;
+        var { player } = this;
+        var spawn = {
             position: (new Vector3())
                 .copy(position)
                 .multiplyScalar(scale)
@@ -97,8 +97,8 @@ class World extends Room {
 
     onBeforeRender(renderer, scene, camera) {
         super.onBeforeRender(renderer, scene, camera);
-        const { blockFacings, scale } = World;
-        const {
+        var { blockFacings, scale } = World;
+        var {
             ambient,
             birds,
             chunks,
@@ -116,7 +116,7 @@ class World extends Room {
         } = this;
 
         player.controllers.forEach((controller) => {
-            const {
+            var {
                 buttons: {
                     grip,
                     gripUp,
@@ -150,7 +150,7 @@ class World extends Room {
                 }
                 return;
             }
-            const hit = (player.skinEditor ? (
+            var hit = (player.skinEditor ? (
                 raycaster.intersectObject(player.skinEditor.getLayer())
             ) : (
                 raycaster.intersectObjects(translocables)
@@ -163,9 +163,9 @@ class World extends Room {
                 origin: raycaster.ray.origin,
             });
             if (gripUp || primaryUp || triggerUp) {
-                const { point, uv } = hit;
-                const isPicking = primaryUp;
-                const isRemoving = gripUp;
+                var { point, uv } = hit;
+                var isPicking = primaryUp;
+                var isRemoving = gripUp;
                 point
                     .addScaledVector(
                         blockFacings[Math.floor(uv.y / 2)],
@@ -217,12 +217,12 @@ class World extends Room {
             .floor();
 
         if (!chunks.player.equals(chunks.aux)) {
-            const hasCrossedBorder = chunks.player.x !== chunks.aux.x || chunks.player.z !== chunks.aux.z;
+            var hasCrossedBorder = chunks.player.x !== chunks.aux.x || chunks.player.z !== chunks.aux.z;
             chunks.player.copy(chunks.aux);
             dom.chunk.innerText = `${chunks.player.x}:${chunks.player.y}:${chunks.player.z}`;
             this.needsTranslocablesUpdate = true;
             if (hasCrossedBorder) {
-                const maxDistance = renderRadius * 1.25;
+                var maxDistance = renderRadius * 1.25;
                 chunks.loaded.forEach((chunk) => {
                     if (
                         chunks.player.distanceTo(
@@ -265,7 +265,7 @@ class World extends Room {
 
     onEvent(event) {
         super.onEvent(event);
-        const { type } = event;
+        var { type } = event;
         switch (type) {
             case 'INIT':
                 this.onInit(event.json);
@@ -285,8 +285,8 @@ class World extends Room {
     }
 
     onInit(data) {
-        const { scale } = World;
-        const {
+        var { scale } = World;
+        var {
             chunks,
             dom,
             menu,
@@ -322,14 +322,14 @@ class World extends Room {
     }
 
     onPick({ type, color }) {
-        const { menu } = this;
+        var { menu } = this;
         menu.picker.setColor(color);
         menu.block.setType(type);
     }
 
     onTeleport(position) {
-        const { scale } = World;
-        const { player } = this;
+        var { scale } = World;
+        var { player } = this;
         player.position
             .copy(position)
             .multiplyScalar(scale)
@@ -341,17 +341,17 @@ class World extends Room {
     }
 
     onUpdate(data) {
-        const { chunks } = this;
+        var { chunks } = this;
         data.forEach(({ x, z, meshes }) => {
-            const key = `${x}:${z}`;
+            var key = `${x}:${z}`;
             if (!chunks.loaded.has(key) && !chunks.requested.has(key)) {
                 return;
             }
-            const heightmap = new Uint8Array(256);
+            var heightmap = new Uint8Array(256);
             chunks.heightmaps.set(key, heightmap);
             meshes.forEach((geometries, subchunk) => {
-                const key = `${x}:${z}:${subchunk}`;
-                let mesh = chunks.voxels.get(key);
+                var key = `${x}:${z}:${subchunk}`;
+                var mesh = chunks.voxels.get(key);
                 if (!mesh) {
                     mesh = chunks.pool.shift();
                     if (!mesh) {
@@ -373,8 +373,8 @@ class World extends Room {
     }
 
     loadChunk(chunk) {
-        const { chunks, server } = this;
-        const key = `${chunk.x}:${chunk.z}`;
+        var { chunks, server } = this;
+        var key = `${chunk.x}:${chunk.z}`;
         if (chunks.loaded.has(key) || chunks.requested.has(key)) {
             return;
         }
@@ -386,13 +386,13 @@ class World extends Room {
     }
 
     unloadChunk(chunk) {
-        const { chunks } = this;
-        const key = `${chunk.x}:${chunk.z}`;
+        var { chunks } = this;
+        var key = `${chunk.x}:${chunk.z}`;
         chunks.heightmaps.delete(key);
         chunks.loaded.delete(key);
-        for (let subchunk = 0; subchunk < World.subchunks; subchunk += 1) {
-            const subchunkKey = `${key}:${subchunk}`;
-            const mesh = chunks.voxels.get(subchunkKey);
+        for (var subchunk = 0; subchunk < World.subchunks; subchunk += 1) {
+            var subchunkKey = `${key}:${subchunk}`;
+            var mesh = chunks.voxels.get(subchunkKey);
             if (mesh) {
                 this.remove(mesh);
                 chunks.voxels.delete(subchunkKey);
@@ -402,7 +402,7 @@ class World extends Room {
     }
 
     updateRenderRadius(radius) {
-        const {
+        var {
             chunks,
             fog,
             menu,
@@ -418,8 +418,8 @@ class World extends Room {
     }
 
     updateTime(time) {
-        const { dayDuration, rainInterval, rainDuration } = World;
-        const {
+        var { dayDuration, rainInterval, rainDuration } = World;
+        var {
             ambient,
             background,
             fog,
@@ -427,8 +427,8 @@ class World extends Room {
             timeOffset,
         } = this;
         time = timeOffset + time;
-        const dayTime = (time % dayDuration) / dayDuration;
-        const intensity = (dayTime > 0.5 ? (1 - dayTime) : dayTime) * 2;
+        var dayTime = (time % dayDuration) / dayDuration;
+        var intensity = (dayTime > 0.5 ? (1 - dayTime) : dayTime) * 2;
         background.setHSL(0.55, 0.4, Math.max(intensity, 0.1) * 0.5);
         fog.color.copy(background);
         Birds.updateMaterial(intensity);
@@ -436,7 +436,7 @@ class World extends Room {
         Rain.updateMaterial(intensity);
         Sun.updateMaterial({ intensity, time: dayTime });
         Voxels.updateMaterials({ intensity });
-        const isRaining = (time % rainInterval) < rainDuration;
+        var isRaining = (time % rainInterval) < rainDuration;
         if (rain.visible !== isRaining) {
             rain.reset();
             rain.visible = isRaining;
@@ -445,7 +445,7 @@ class World extends Room {
     }
 
     updateTranslocables() {
-        const { chunks, translocables } = this;
+        var { chunks, translocables } = this;
         translocables.length = 0;
         chunks.voxels.forEach(({ chunk, meshes }) => {
             if (chunks.player.distanceTo(chunk) <= 4) {
@@ -461,11 +461,11 @@ class World extends Room {
     }
 
     static getRenderGrid(radius) {
-        const grid = [];
-        const center = new Vector2();
-        for (let x = -radius; x <= radius; x += 1) {
-            for (let y = -radius; y <= radius; y += 1) {
-                const chunk = new Vector2(x, y);
+        var grid = [];
+        var center = new Vector2();
+        for (var x = -radius; x <= radius; x += 1) {
+            for (var y = -radius; y <= radius; y += 1) {
+                var chunk = new Vector2(x, y);
                 if (chunk.distanceTo(center) <= radius) {
                     grid.push(chunk);
                 }
@@ -477,7 +477,7 @@ class World extends Room {
 
     static getURLParams() {
         return document.location.hash.substr(2).split('/').reduce((keys, param) => {
-            const [key, value] = param.split(':');
+            var [key, value] = param.split(':');
             keys[key] = decodeURIComponent(value);
             return keys;
         }, {});

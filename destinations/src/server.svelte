@@ -1,9 +1,9 @@
 <script>
 	import { fetchServer } from './auth.js';
 	import Share from './share.svelte';
-	export let id;
+	export var id;
 
-	const fetchServerStatus = ({ url }) => (
+	var fetchServerStatus = ({ url }) => (
 		fetch(`${url}status`)
 			.then((res) => res.json())
 	);

@@ -8,13 +8,13 @@ class Ambient {
     constructor({
         listener
     }) {
-        const {
+        var {
             format,
             sounds
         } = Ambient;
         this.effects = {};
         this.listener = listener;
-        const loader = new AudioLoader();
+        var loader = new AudioLoader();
         Promise.all(sounds.map(({
                 name
             }) => new Promise((resolve, reject) => (
@@ -24,16 +24,16 @@ class Ambient {
     }
 
     onLoad(buffers) {
-        const {
+        var {
             gain,
             sounds
         } = Ambient;
-        const {
+        var {
             effects,
             listener
         } = this;
         this.sounds = sounds.map((sound, i) => {
-            const audio = new Audio(listener);
+            var audio = new Audio(listener);
             audio.setBuffer(buffers[i]);
             if (sound.trigger) {
                 audio.setVolume(gain);
@@ -50,13 +50,13 @@ class Ambient {
     }
 
     trigger(name) {
-        const {
+        var {
             sounds
         } = this;
         if (!sounds) {
             return;
         }
-        const sound = sounds.find(({
+        var sound = sounds.find(({
             trigger
         }) => (trigger === name));
         if (sound) {
@@ -65,10 +65,10 @@ class Ambient {
     }
 
     updateAltitude(altitude) {
-        const {
+        var {
             gain
         } = Ambient;
-        const {
+        var {
             sounds
         } = this;
         if (!sounds) {
@@ -80,7 +80,7 @@ class Ambient {
             to
         }) => {
             if (from || to) {
-                const step = ThreeMath.clamp(ThreeMath.mapLinear(altitude, from, to, 0, 2), 0, 2);
+                var step = ThreeMath.clamp(ThreeMath.mapLinear(altitude, from, to, 0, 2), 0, 2);
                 audio.setVolume((step >= 1 ? 2 - step : step) * gain);
             }
         });
@@ -90,10 +90,10 @@ class Ambient {
         name,
         enabled
     }) {
-        const {
+        var {
             gain
         } = Ambient;
-        const {
+        var {
             effects,
             sounds
         } = this;
@@ -101,7 +101,7 @@ class Ambient {
         if (!sounds) {
             return;
         }
-        const effect = sounds.find(({
+        var effect = sounds.find(({
             effect
         }) => (effect === name));
         if (effect) {

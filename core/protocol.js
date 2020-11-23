@@ -1,21 +1,21 @@
 /* eslint-disable */
 import $protobuf from './protobuf.js';
 
-const $Reader = $protobuf.Reader,
+var $Reader = $protobuf.Reader,
     $Writer = $protobuf.Writer,
     $util = $protobuf.util;
 
-const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-export const protocol = $root.protocol = (() => {
+export var protocol = $root.protocol = (() => {
 
-    const protocol = {};
+    var protocol = {};
 
     protocol.Geometry = (function() {
 
         function Geometry(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -50,10 +50,10 @@ export const protocol = $root.protocol = (() => {
         Geometry.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length,
+            var end = length === undefined ? reader.len : reader.pos + length,
                 message = new $root.protocol.Geometry();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 switch (tag >>> 3) {
                     case 1:
                         message.color = reader.bytes();
@@ -102,7 +102,7 @@ export const protocol = $root.protocol = (() => {
         Geometry.fromObject = function fromObject(object) {
             if (object instanceof $root.protocol.Geometry)
                 return object;
-            let message = new $root.protocol.Geometry();
+            var message = new $root.protocol.Geometry();
             if (object.color != null)
                 if (typeof object.color === "string")
                     $util.base64.decode(object.color, message.color = $util.newBuffer($util.base64.length(object.color)), 0);
@@ -129,7 +129,7 @@ export const protocol = $root.protocol = (() => {
         Geometry.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 if (options.bytes === String)
                     object.color = "";
@@ -182,7 +182,7 @@ export const protocol = $root.protocol = (() => {
 
         function Mesh(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -211,10 +211,10 @@ export const protocol = $root.protocol = (() => {
         Mesh.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length,
+            var end = length === undefined ? reader.len : reader.pos + length,
                 message = new $root.protocol.Mesh();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 switch (tag >>> 3) {
                     case 1:
                         message.opaque = $root.protocol.Geometry.decode(reader, reader.uint32());
@@ -240,12 +240,12 @@ export const protocol = $root.protocol = (() => {
             if (typeof message !== "object" || message === null)
                 return "object expected";
             if (message.opaque != null && message.hasOwnProperty("opaque")) {
-                let error = $root.protocol.Geometry.verify(message.opaque);
+                var error = $root.protocol.Geometry.verify(message.opaque);
                 if (error)
                     return "opaque." + error;
             }
             if (message.transparent != null && message.hasOwnProperty("transparent")) {
-                let error = $root.protocol.Geometry.verify(message.transparent);
+                var error = $root.protocol.Geometry.verify(message.transparent);
                 if (error)
                     return "transparent." + error;
             }
@@ -255,7 +255,7 @@ export const protocol = $root.protocol = (() => {
         Mesh.fromObject = function fromObject(object) {
             if (object instanceof $root.protocol.Mesh)
                 return object;
-            let message = new $root.protocol.Mesh();
+            var message = new $root.protocol.Mesh();
             if (object.opaque != null) {
                 if (typeof object.opaque !== "object")
                     throw TypeError(".protocol.Mesh.opaque: object expected");
@@ -272,7 +272,7 @@ export const protocol = $root.protocol = (() => {
         Mesh.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.opaque = null;
                 object.transparent = null;
@@ -296,7 +296,7 @@ export const protocol = $root.protocol = (() => {
         function Chunk(properties) {
             this.meshes = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -317,7 +317,7 @@ export const protocol = $root.protocol = (() => {
             if (message.z != null && Object.hasOwnProperty.call(message, "z"))
                 writer.uint32(16).int32(message.z);
             if (message.meshes != null && message.meshes.length)
-                for (let i = 0; i < message.meshes.length; ++i)
+                for (var i = 0; i < message.meshes.length; ++i)
                     $root.protocol.Mesh.encode(message.meshes[i], writer.uint32(26).fork()).ldelim();
             return writer;
         };
@@ -329,10 +329,10 @@ export const protocol = $root.protocol = (() => {
         Chunk.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length,
+            var end = length === undefined ? reader.len : reader.pos + length,
                 message = new $root.protocol.Chunk();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 switch (tag >>> 3) {
                     case 1:
                         message.x = reader.int32();
@@ -371,8 +371,8 @@ export const protocol = $root.protocol = (() => {
             if (message.meshes != null && message.hasOwnProperty("meshes")) {
                 if (!Array.isArray(message.meshes))
                     return "meshes: array expected";
-                for (let i = 0; i < message.meshes.length; ++i) {
-                    let error = $root.protocol.Mesh.verify(message.meshes[i]);
+                for (var i = 0; i < message.meshes.length; ++i) {
+                    var error = $root.protocol.Mesh.verify(message.meshes[i]);
                     if (error)
                         return "meshes." + error;
                 }
@@ -383,7 +383,7 @@ export const protocol = $root.protocol = (() => {
         Chunk.fromObject = function fromObject(object) {
             if (object instanceof $root.protocol.Chunk)
                 return object;
-            let message = new $root.protocol.Chunk();
+            var message = new $root.protocol.Chunk();
             if (object.x != null)
                 message.x = object.x | 0;
             if (object.z != null)
@@ -392,7 +392,7 @@ export const protocol = $root.protocol = (() => {
                 if (!Array.isArray(object.meshes))
                     throw TypeError(".protocol.Chunk.meshes: array expected");
                 message.meshes = [];
-                for (let i = 0; i < object.meshes.length; ++i) {
+                for (var i = 0; i < object.meshes.length; ++i) {
                     if (typeof object.meshes[i] !== "object")
                         throw TypeError(".protocol.Chunk.meshes: object expected");
                     message.meshes[i] = $root.protocol.Mesh.fromObject(object.meshes[i]);
@@ -404,7 +404,7 @@ export const protocol = $root.protocol = (() => {
         Chunk.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.meshes = [];
             if (options.defaults) {
@@ -417,7 +417,7 @@ export const protocol = $root.protocol = (() => {
                 object.z = message.z;
             if (message.meshes && message.meshes.length) {
                 object.meshes = [];
-                for (let j = 0; j < message.meshes.length; ++j)
+                for (var j = 0; j < message.meshes.length; ++j)
                     object.meshes[j] = $root.protocol.Mesh.toObject(message.meshes[j], options);
             }
             return object;
@@ -434,7 +434,7 @@ export const protocol = $root.protocol = (() => {
 
         function Signal(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -463,10 +463,10 @@ export const protocol = $root.protocol = (() => {
         Signal.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length,
+            var end = length === undefined ? reader.len : reader.pos + length,
                 message = new $root.protocol.Signal();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 switch (tag >>> 3) {
                     case 1:
                         message.peer = reader.string();
@@ -503,7 +503,7 @@ export const protocol = $root.protocol = (() => {
         Signal.fromObject = function fromObject(object) {
             if (object instanceof $root.protocol.Signal)
                 return object;
-            let message = new $root.protocol.Signal();
+            var message = new $root.protocol.Signal();
             if (object.peer != null)
                 message.peer = String(object.peer);
             if (object.signal != null)
@@ -514,7 +514,7 @@ export const protocol = $root.protocol = (() => {
         Signal.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.peer = "";
                 object.signal = "";
@@ -538,7 +538,7 @@ export const protocol = $root.protocol = (() => {
         function Message(properties) {
             this.chunks = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -563,7 +563,7 @@ export const protocol = $root.protocol = (() => {
             if (message.text != null && Object.hasOwnProperty.call(message, "text"))
                 writer.uint32(26).string(message.text);
             if (message.chunks != null && message.chunks.length)
-                for (let i = 0; i < message.chunks.length; ++i)
+                for (var i = 0; i < message.chunks.length; ++i)
                     $root.protocol.Chunk.encode(message.chunks[i], writer.uint32(34).fork()).ldelim();
             if (message.signal != null && Object.hasOwnProperty.call(message, "signal"))
                 $root.protocol.Signal.encode(message.signal, writer.uint32(42).fork()).ldelim();
@@ -577,10 +577,10 @@ export const protocol = $root.protocol = (() => {
         Message.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length,
+            var end = length === undefined ? reader.len : reader.pos + length,
                 message = new $root.protocol.Message();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 switch (tag >>> 3) {
                     case 1:
                         message.type = reader.int32();
@@ -639,14 +639,14 @@ export const protocol = $root.protocol = (() => {
             if (message.chunks != null && message.hasOwnProperty("chunks")) {
                 if (!Array.isArray(message.chunks))
                     return "chunks: array expected";
-                for (let i = 0; i < message.chunks.length; ++i) {
-                    let error = $root.protocol.Chunk.verify(message.chunks[i]);
+                for (var i = 0; i < message.chunks.length; ++i) {
+                    var error = $root.protocol.Chunk.verify(message.chunks[i]);
                     if (error)
                         return "chunks." + error;
                 }
             }
             if (message.signal != null && message.hasOwnProperty("signal")) {
-                let error = $root.protocol.Signal.verify(message.signal);
+                var error = $root.protocol.Signal.verify(message.signal);
                 if (error)
                     return "signal." + error;
             }
@@ -656,7 +656,7 @@ export const protocol = $root.protocol = (() => {
         Message.fromObject = function fromObject(object) {
             if (object instanceof $root.protocol.Message)
                 return object;
-            let message = new $root.protocol.Message();
+            var message = new $root.protocol.Message();
             switch (object.type) {
                 case "ERROR":
                 case 1:
@@ -703,7 +703,7 @@ export const protocol = $root.protocol = (() => {
                 if (!Array.isArray(object.chunks))
                     throw TypeError(".protocol.Message.chunks: array expected");
                 message.chunks = [];
-                for (let i = 0; i < object.chunks.length; ++i) {
+                for (var i = 0; i < object.chunks.length; ++i) {
                     if (typeof object.chunks[i] !== "object")
                         throw TypeError(".protocol.Message.chunks: object expected");
                     message.chunks[i] = $root.protocol.Chunk.fromObject(object.chunks[i]);
@@ -720,7 +720,7 @@ export const protocol = $root.protocol = (() => {
         Message.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.chunks = [];
             if (options.defaults) {
@@ -737,7 +737,7 @@ export const protocol = $root.protocol = (() => {
                 object.text = message.text;
             if (message.chunks && message.chunks.length) {
                 object.chunks = [];
-                for (let j = 0; j < message.chunks.length; ++j)
+                for (var j = 0; j < message.chunks.length; ++j)
                     object.chunks[j] = $root.protocol.Chunk.toObject(message.chunks[j], options);
             }
             if (message.signal != null && message.hasOwnProperty("signal"))
@@ -750,7 +750,7 @@ export const protocol = $root.protocol = (() => {
         };
 
         Message.Type = (function() {
-            const valuesById = {},
+            var valuesById = {},
                 values = Object.create(valuesById);
             values[valuesById[1] = "ERROR"] = 1;
             values[valuesById[2] = "INIT"] = 2;

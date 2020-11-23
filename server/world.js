@@ -1,7 +1,7 @@
-const fs = require('fs');
-const Chunk = require('./chunk');
-const Generators = require('./generators');
-const Room = require('./room');
+var fs = require('fs');
+var Chunk = require('./chunk');
+var Generators = require('./generators');
+var Room = require('./room');
 
 class World extends Room {
     constructor({
@@ -31,16 +31,12 @@ class World extends Room {
             Math.floor(Math.random() * 65536)
         );
         this.storage = storage;
-        this.generator = Generators({
-            blockTypes,
-            generator,
-            seed
-        });
+        this.generator = Generators({ blockTypes, generator, seed });
         console.log(`World seed: ${this.seed}`);
         if (preload && !Number.isNaN(preload)) {
             console.log(`Preloading ${((preload + preload + 1)) ** 2} chunks...`);
-            for (let z = -preload; z <= preload; z += 1) {
-                for (let x = -preload; x <= preload; x += 1) {
+            for (var z = -preload; z <= preload; z += 1) {
+                for (var x = -preload; x <= preload; x += 1) {
                     this.getChunk({
                         x: this.generator.spawn.x + x,
                         z: this.generator.spawn.z + z,
@@ -53,47 +49,27 @@ class World extends Room {
         }
         if (storage) {
             if (!fs.existsSync(storage)) {
-                fs.mkdirSync(storage, {
-                    recursive: true
-                });
+                fs.mkdirSync(storage, { recursive: true });
             }
             setInterval(() => this.persist(), 60000);
         }
     }
 
-    getChunk({
-        x,
-        z
-    }) {
-        const {
-            chunks
-        } = this;
-        const key = `${x}:${z}`;
-        let chunk = chunks.get(key);
+    getChunk({ x, z }) {
+        var { chunks } = this;
+        var key = `${x}:${z}`;
+        var chunk = chunks.get(key);
         if (!chunk) {
-            chunk = new Chunk({
-                world: this,
-                x,
-                z
-            });
+            chunk = new Chunk({ world: this, x, z });
             chunks.set(key, chunk);
         }
         return chunk;
     }
 
     onInit() {
-        const {
-            generator: {
-                client,
-                spawn: offset
-            },
-            seed
-        } = this;
-        const chunk = this.getChunk({
-            x: offset.x,
-            z: offset.z
-        });
-        const spawn = {
+        var { generator: { client, spawn: offset }, seed } = this;
+        var chunk = this.getChunk({ x: offset.x, z: offset.z });
+        var spawn = {
             x: Math.floor(Math.random() * Chunk.size),
             z: Math.floor(Math.random() * Chunk.size),
         };
@@ -112,7 +88,7 @@ class World extends Room {
         switch (request.type) {
             case 'LOAD':
                 {
-                    let {
+                    var {
                         x,
                         z,
                     } = request.json || {};
@@ -124,10 +100,7 @@ class World extends Room {
                     ) {
                         return;
                     }
-                    const chunk = this.getChunk({
-                        x,
-                        z
-                    });
+                    var chunk = this.getChunk({ x, z });
                     if (!chunk.meshes) {
                         chunk.remesh();
                     }
@@ -140,11 +113,7 @@ class World extends Room {
                 }
             case 'PICK':
                 {
-                    let {
-                        x,
-                        y,
-                        z
-                    } = request.json || {};
+                    var { x, y, z } = request.json || {};
                     x = parseInt(x, 10);
                     y = parseInt(y, 10);
                     z = parseInt(z, 10);
@@ -155,7 +124,7 @@ class World extends Room {
                     ) {
                         return;
                     }
-                    let chunk = {
+                    var chunk = {
                         x: Math.floor(x / Chunk.size),
                         z: Math.floor(z / Chunk.size),
                     };
@@ -165,7 +134,7 @@ class World extends Room {
                     if (chunk.needsPropagation) {
                         return;
                     }
-                    const voxel = Chunk.getVoxel(x, y, z);
+                    var voxel = Chunk.getVoxel(x, y, z);
                     this.broadcast({
                         type: 'PICK',
                         json: {
@@ -183,10 +152,7 @@ class World extends Room {
                 }
             case 'TELEPORT':
                 {
-                    let {
-                        x,
-                        z
-                    } = request.json || {};
+                    var { x, z } = request.json || {};
                     x = parseInt(x, 10);
                     z = parseInt(z, 10);
                     if (
@@ -195,7 +161,7 @@ class World extends Room {
                     ) {
                         return;
                     }
-                    let chunk = {
+                    var chunk = {
                         x: Math.floor(x / Chunk.size),
                         z: Math.floor(z / Chunk.size),
                     };
@@ -203,17 +169,13 @@ class World extends Room {
                     if (chunk.needsPropagation) {
                         return;
                     }
-                    const y = chunk.heightmap[
+                    var y = chunk.heightmap[
                         ((x - (Chunk.size * chunk.x)) * Chunk.size) +
                         (z - (Chunk.size * chunk.z))
                     ];
                     this.broadcast({
                         type: 'TELEPORT',
-                        json: {
-                            x,
-                            y,
-                            z
-                        },
+                        json: { x, y, z },
                     }, {
                         include: client.id,
                     });
@@ -221,12 +183,8 @@ class World extends Room {
                 }
             case 'UPDATE':
                 {
-                    const {
-                        generator: {
-                            types
-                        }
-                    } = this;
-                    let {
+                    var { generator: { types } } = this;
+                    var {
                         x,
                         y,
                         z,
@@ -253,7 +211,7 @@ class World extends Room {
                     ) {
                         return;
                     }
-                    let chunk = {
+                    var chunk = {
                         x: Math.floor(x / Chunk.size),
                         z: Math.floor(z / Chunk.size),
                     };
@@ -263,7 +221,7 @@ class World extends Room {
                     if (chunk.needsPropagation) {
                         return;
                     }
-                    const current = chunk.voxels[Chunk.getVoxel(x, y, z)];
+                    var current = chunk.voxels[Chunk.getVoxel(x, y, z)];
                     if (
                         (current !== types.air && type !== types.air) ||
                         (current === types.air && type === types.air)
@@ -285,14 +243,8 @@ class World extends Room {
                         type: 'UPDATE',
                         chunks: [
                             chunk,
-                            ...Chunk.chunkNeighbors.map(({
-                                x,
-                                z
-                            }) => (
-                                this.getChunk({
-                                    x: chunk.x + x,
-                                    z: chunk.z + z
-                                })
+                            ...Chunk.chunkNeighbors.map(({ x, z }) => (
+                                this.getChunk({ x: chunk.x + x, z: chunk.z + z })
                             )),
                         ].map((chunk) => {
                             chunk.remesh();
@@ -307,11 +259,7 @@ class World extends Room {
     }
 
     onAtlasRequest(req, res) {
-        const {
-            generator: {
-                atlas
-            }
-        } = this;
+        var { generator: { atlas } } = this;
         res
             .set('Cache-Control', 'public, max-age=0')
             .type('image/png')
@@ -319,7 +267,7 @@ class World extends Room {
     }
 
     onStatusRequest(req, res) {
-        const {
+        var {
             clients,
             id,
             name,
@@ -336,9 +284,7 @@ class World extends Room {
     }
 
     persist() {
-        const {
-            chunks
-        } = this;
+        var { chunks } = this;
         chunks.forEach((chunk) => {
             if (chunk.needsPersistence) {
                 chunk.persist();
@@ -347,14 +293,10 @@ class World extends Room {
     }
 
     unloadChunks() {
-        const {
-            maxLoadedChunks
-        } = World;
-        const {
-            chunks
-        } = this;
+        var { maxLoadedChunks } = World;
+        var { chunks } = this;
         while (chunks.size > maxLoadedChunks) {
-            const [oldestKey, oldestChunk] = chunks.entries().next().value;
+            var [oldestKey, oldestChunk] = chunks.entries().next().value;
             if (oldestChunk.needsPersistence) {
                 oldestChunk.persist();
             }

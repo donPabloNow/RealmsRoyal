@@ -1,4 +1,4 @@
 module.exports = {
-    isTransparent: true,
-    textures: {},
+  isTransparent: true,
+  textures: {},
 };

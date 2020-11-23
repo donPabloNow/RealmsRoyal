@@ -43,7 +43,7 @@ class Renderer {
 
         // Setup VR
         if (navigator.xr) {
-            const { xr } = this.renderer;
+            var { xr } = this.renderer;
             xr.enabled = true;
             dom.renderer.addEventListener('mousedown', () => {
                 if (xr.isPresenting) return;
@@ -73,7 +73,7 @@ class Renderer {
     }
 
     onAnimationTick() {
-        const {
+        var {
             camera,
             clock,
             dom,
@@ -105,14 +105,14 @@ class Renderer {
     }
 
     onResize() {
-        const {
+        var {
             camera,
             dom,
             renderer,
         } = this;
 
         // Resize viewport
-        const { width, height } = dom.renderer.getBoundingClientRect();
+        var { width, height } = dom.renderer.getBoundingClientRect();
         if (renderer.xr.isPresenting) {
             renderer.domElement.style.width = `${width}px`;
             renderer.domElement.style.height = `${height}px`;

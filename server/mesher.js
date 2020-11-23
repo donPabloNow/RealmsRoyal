@@ -1,4 +1,3 @@
-F
 /*
 This code is begging for a refactor.
 It has gone through a bunch of patches
@@ -13,16 +12,16 @@ module.exports = ({
     to,
     types,
 }) => {
-    const getLightingAO = ({ light, sunlight }, neighbors) => neighbors.map((neighbors) => {
-        let n1 = types[neighbors[0].type].hasAO;
-        let n2 = types[neighbors[1].type].hasAO;
-        let n3 = (n1 && n2) || (types[neighbors[2].type].hasAO);
-        const ao = [n1, n2, n3].reduce((ao, n) => (
+    var getLightingAO = ({ light, sunlight }, neighbors) => neighbors.map((neighbors) => {
+        var n1 = types[neighbors[0].type].hasAO;
+        var n2 = types[neighbors[1].type].hasAO;
+        var n3 = (n1 && n2) || (types[neighbors[2].type].hasAO);
+        var ao = [n1, n2, n3].reduce((ao, n) => (
             ao - (n ? 0.2 : 0)
         ), 1);
-        let c = 1;
-        let l = light;
-        let s = sunlight;
+        var c = 1;
+        var l = light;
+        var s = sunlight;
         n1 = types[neighbors[0].type].isTransparent;
         n2 = types[neighbors[1].type].isTransparent;
         n3 = (n1 || n2) && types[neighbors[2].type].isTransparent;
@@ -41,12 +40,12 @@ module.exports = ({
             combined: ao * (l + s) * 0.5,
         };
     });
-    const getLighting = ({ light, sunlight }) => [...Array(4)].map(() => ({
+    var getLighting = ({ light, sunlight }) => [...Array(4)].map(() => ({
         ao: 1,
         light: (light << 4) | sunlight,
         combined: (light + sunlight) * 0.5,
     }));
-    const getOrigin = (
+    var getOrigin = (
         x,
         y,
         z,
@@ -58,7 +57,7 @@ module.exports = ({
         y: (y - from.y) * 8 + oy,
         z: z * 8 + oz,
     });
-    const geometry = {
+    var geometry = {
         opaque: {
             color: [],
             light: [],
@@ -72,7 +71,7 @@ module.exports = ({
             uv: [],
         },
     };
-    const pushFace = (
+    var pushFace = (
         p1,
         p2,
         p3,
@@ -83,13 +82,13 @@ module.exports = ({
         texture,
         facing
     ) => {
-        const uvs = [
+        var uvs = [
             [(texture * 2) + 1, (facing * 2)],
             [(texture + 1) * 2, (facing * 2)],
             [(texture + 1) * 2, (facing * 2) + 1],
             [(texture * 2) + 1, (facing * 2) + 1],
         ];
-        const vertices = [p1, p2, p3, p4];
+        var vertices = [p1, p2, p3, p4];
         if (
             lighting[0].combined + lighting[2].combined < lighting[1].combined + lighting[3].combined
         ) {
@@ -97,7 +96,7 @@ module.exports = ({
             uvs.unshift(uvs.pop());
             vertices.unshift(vertices.pop());
         }
-        const mesh = isTransparent ? geometry.transparent : geometry.opaque;
+        var mesh = isTransparent ? geometry.transparent : geometry.opaque;
         lighting.forEach((lighting) => {
             mesh.color.push(
                 Math.round(color.r * lighting.ao),
@@ -109,12 +108,12 @@ module.exports = ({
         uvs.forEach((uv) => mesh.uv.push(...uv));
         vertices.forEach((vertex) => mesh.position.push(...vertex));
     };
-    for (let x = from.x; x < to.x; x += 1) { // eslint-disable-line prefer-destructuring
-        for (let y = from.y; y < to.y; y += 1) { // eslint-disable-line prefer-destructuring
-            for (let z = from.z; z < to.z; z += 1) { // eslint-disable-line prefer-destructuring
-                const voxel = get(x, y, z);
+    for (var x = from.x; x < to.x; x += 1) { // eslint-disable-line prefer-destructuring
+        for (var y = from.y; y < to.y; y += 1) { // eslint-disable-line prefer-destructuring
+            for (var z = from.z; z < to.z; z += 1) { // eslint-disable-line prefer-destructuring
+                var voxel = get(x, y, z);
                 if (voxel.type !== types.air) {
-                    const neighbors = {
+                    var neighbors = {
                         get: (nx, ny, nz) => get(x + nx, y + ny, z + nz),
                         top: get(x, y + 1, z),
                         bottom: get(x, y - 1, z),
@@ -123,8 +122,8 @@ module.exports = ({
                         west: get(x - 1, y, z),
                         east: get(x + 1, y, z),
                     };
-                    const { textures, hasAO, isTransparent } = types[voxel.type];
-                    const faces = types[voxel.type].faces({ neighbors, types, voxel });
+                    var { textures, hasAO, isTransparent } = types[voxel.type];
+                    var faces = types[voxel.type].faces({ neighbors, types, voxel });
                     faces.forEach(({
                         facing,
                         offset,
@@ -134,13 +133,13 @@ module.exports = ({
                         switch (facing) {
                             case 'top':
                                 {
-                                    const o = getOrigin(x, y + 1, z + 1, offset.x, -offset.z, -offset.y);
-                                    let lighting;
+                                    var o = getOrigin(x, y + 1, z + 1, offset.x, -offset.z, -offset.y);
+                                    var lighting;
                                     if (hasAO) {
-                                        const n = get(x, y + 1, z - 1);
-                                        const e = get(x + 1, y + 1, z);
-                                        const w = get(x - 1, y + 1, z);
-                                        const s = get(x, y + 1, z + 1);
+                                        var n = get(x, y + 1, z - 1);
+                                        var e = get(x + 1, y + 1, z);
+                                        var w = get(x - 1, y + 1, z);
+                                        var s = get(x, y + 1, z + 1);
                                         lighting = getLightingAO(
                                             neighbors.top, [
                                                 [w, s, get(x - 1, y + 1, z + 1)],
@@ -164,13 +163,13 @@ module.exports = ({
                                 }
                             case 'bottom':
                                 {
-                                    const o = getOrigin(x, y, z, offset.x, offset.z, offset.y);
-                                    let lighting;
+                                    var o = getOrigin(x, y, z, offset.x, offset.z, offset.y);
+                                    var lighting;
                                     if (hasAO) {
-                                        const n = get(x, y - 1, z - 1);
-                                        const e = get(x + 1, y - 1, z);
-                                        const w = get(x - 1, y - 1, z);
-                                        const s = get(x, y - 1, z + 1);
+                                        var n = get(x, y - 1, z - 1);
+                                        var e = get(x + 1, y - 1, z);
+                                        var w = get(x - 1, y - 1, z);
+                                        var s = get(x, y - 1, z + 1);
                                         lighting = getLightingAO(
                                             neighbors.bottom, [
                                                 [w, n, get(x - 1, y - 1, z - 1)],
@@ -194,13 +193,13 @@ module.exports = ({
                                 }
                             case 'south':
                                 {
-                                    const o = getOrigin(x, y, z + 1, offset.x, offset.y, -offset.z);
-                                    let lighting;
+                                    var o = getOrigin(x, y, z + 1, offset.x, offset.y, -offset.z);
+                                    var lighting;
                                     if (hasAO) {
-                                        const e = get(x + 1, y, z + 1);
-                                        const w = get(x - 1, y, z + 1);
-                                        const t = get(x, y + 1, z + 1);
-                                        const b = get(x, y - 1, z + 1);
+                                        var e = get(x + 1, y, z + 1);
+                                        var w = get(x - 1, y, z + 1);
+                                        var t = get(x, y + 1, z + 1);
+                                        var b = get(x, y - 1, z + 1);
                                         lighting = getLightingAO(
                                             neighbors.south, [
                                                 [w, b, get(x - 1, y - 1, z + 1)],
@@ -224,13 +223,13 @@ module.exports = ({
                                 }
                             case 'north':
                                 {
-                                    const o = getOrigin(x + 1, y, z, -offset.x, offset.y, offset.z);
-                                    let lighting;
+                                    var o = getOrigin(x + 1, y, z, -offset.x, offset.y, offset.z);
+                                    var lighting;
                                     if (hasAO) {
-                                        const e = get(x + 1, y, z - 1);
-                                        const w = get(x - 1, y, z - 1);
-                                        const t = get(x, y + 1, z - 1);
-                                        const b = get(x, y - 1, z - 1);
+                                        var e = get(x + 1, y, z - 1);
+                                        var w = get(x - 1, y, z - 1);
+                                        var t = get(x, y + 1, z - 1);
+                                        var b = get(x, y - 1, z - 1);
                                         lighting = getLightingAO(
                                             neighbors.north, [
                                                 [e, b, get(x + 1, y - 1, z - 1)],
@@ -254,13 +253,13 @@ module.exports = ({
                                 }
                             case 'west':
                                 {
-                                    const o = getOrigin(x, y, z, offset.z, offset.y, offset.x);
-                                    let lighting;
+                                    var o = getOrigin(x, y, z, offset.z, offset.y, offset.x);
+                                    var lighting;
                                     if (hasAO) {
-                                        const n = get(x - 1, y, z - 1);
-                                        const s = get(x - 1, y, z + 1);
-                                        const t = get(x - 1, y + 1, z);
-                                        const b = get(x - 1, y - 1, z);
+                                        var n = get(x - 1, y, z - 1);
+                                        var s = get(x - 1, y, z + 1);
+                                        var t = get(x - 1, y + 1, z);
+                                        var b = get(x - 1, y - 1, z);
                                         lighting = getLightingAO(
                                             neighbors.west, [
                                                 [n, b, get(x - 1, y - 1, z - 1)],
@@ -284,13 +283,13 @@ module.exports = ({
                                 }
                             case 'east':
                                 {
-                                    const o = getOrigin(x + 1, y, z + 1, -offset.z, offset.y, -offset.x);
-                                    let lighting;
+                                    var o = getOrigin(x + 1, y, z + 1, -offset.z, offset.y, -offset.x);
+                                    var lighting;
                                     if (hasAO) {
-                                        const n = get(x + 1, y, z - 1);
-                                        const s = get(x + 1, y, z + 1);
-                                        const t = get(x + 1, y + 1, z);
-                                        const b = get(x + 1, y - 1, z);
+                                        var n = get(x + 1, y, z - 1);
+                                        var s = get(x + 1, y, z + 1);
+                                        var t = get(x + 1, y + 1, z);
+                                        var b = get(x + 1, y - 1, z);
                                         lighting = getLightingAO(
                                             neighbors.east, [
                                                 [s, b, get(x + 1, y - 1, z + 1)],
@@ -321,7 +320,7 @@ module.exports = ({
         }
     }
     return ['opaque', 'transparent'].reduce((meshes, key) => {
-        const {
+        var {
             color,
             light,
             position,

@@ -30,7 +30,7 @@ class DesktopControls {
     }
 
     dispose() {
-        const { isLocked, renderer } = this;
+        var { isLocked, renderer } = this;
         window.removeEventListener('blur', this.onBlur);
         document.removeEventListener('keydown', this.onKeyDown);
         document.removeEventListener('keyup', this.onKeyUp);
@@ -43,7 +43,7 @@ class DesktopControls {
     }
 
     onAnimationTick({ delta, camera, player }) {
-        const {
+        var {
             keyboard,
             isLocked,
             pointer,
@@ -57,17 +57,17 @@ class DesktopControls {
             return;
         }
         if (pointer.x !== 0 || pointer.y !== 0) {
-            const { euler } = this.aux;
+            var { euler } = this.aux;
             euler.setFromQuaternion(camera.quaternion);
             euler.y -= pointer.x * 0.003;
             euler.x -= pointer.y * 0.003;
-            const PI_2 = Math.PI / 2;
+            var PI_2 = Math.PI / 2;
             euler.x = Math.max(-PI_2, Math.min(PI_2, euler.x));
             camera.quaternion.setFromEuler(euler);
             pointer.set(0, 0);
         }
         if (keyboard.x !== 0 || keyboard.y !== 0 || keyboard.z !== 0) {
-            const {
+            var {
                 direction,
                 forward,
                 right,
@@ -87,12 +87,12 @@ class DesktopControls {
     }
 
     onBlur() {
-        const { keyboard } = this;
+        var { keyboard } = this;
         keyboard.set(0, 0, 0);
     }
 
     onKeyDown({ keyCode, repeat }) {
-        const { keyboard } = this;
+        var { keyboard } = this;
         if (repeat) return;
         switch (keyCode) {
             case 16:
@@ -119,7 +119,7 @@ class DesktopControls {
     }
 
     onKeyUp({ keyCode, repeat }) {
-        const { keyboard } = this;
+        var { keyboard } = this;
         if (repeat) return;
         switch (keyCode) {
             case 16:
@@ -140,7 +140,7 @@ class DesktopControls {
     }
 
     onMouseDown() {
-        const { isLocked, xr } = this;
+        var { isLocked, xr } = this;
         if (isLocked || xr.isPresenting) {
             return;
         }
@@ -148,7 +148,7 @@ class DesktopControls {
     }
 
     onMouseMove({ movementX, movementY }) {
-        const { isLocked, pointer } = this;
+        var { isLocked, pointer } = this;
         if (!isLocked) {
             return;
         }

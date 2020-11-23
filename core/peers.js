@@ -15,7 +15,7 @@ class Peers extends Object3D {
     }
 
     onAnimationTick({ delta, player }) {
-        const { peers } = this;
+        var { peers } = this;
         peers.forEach(({ controllers }) => controllers.forEach((controller) => {
             if (controller.visible) {
                 controller.hand.animate({ delta });
@@ -25,7 +25,7 @@ class Peers extends Object3D {
     }
 
     onUserMedia(stream) {
-        const { peers } = this;
+        var { peers } = this;
         this.userMedia = stream;
         peers.forEach(({ connection }) => {
             if (!connection.destroyed) {
@@ -35,11 +35,11 @@ class Peers extends Object3D {
     }
 
     broadcast({ controllers, head, session: { skin } }) {
-        const { peers } = this;
-        const hands = controllers
+        var { peers } = this;
+        var hands = controllers
             .filter(({ hand }) => (!!hand))
             .sort(({ hand: { handedness: a } }, { hand: { handedness: b } }) => b.localeCompare(a));
-        const update = new Float32Array([
+        var update = new Float32Array([
             ...head.position.toArray(),
             ...head.quaternion.toArray(),
             ...(hands.length === 2 ? (
@@ -53,7 +53,7 @@ class Peers extends Object3D {
                 }, [])
             ) : []),
         ]);
-        const payload = new Uint8Array(1 + update.byteLength);
+        var payload = new Uint8Array(1 + update.byteLength);
         payload[0] = 0x01;
         payload.set(new Uint8Array(update.buffer), 1);
         peers.forEach(({ connection }) => {
@@ -69,8 +69,8 @@ class Peers extends Object3D {
                 }
                 if (!connection.hasSentSkin) {
                     connection.hasSentSkin = true;
-                    const encoded = (new TextEncoder()).encode(skin);
-                    const payload = new Uint8Array(1 + encoded.length);
+                    var encoded = (new TextEncoder()).encode(skin);
+                    var payload = new Uint8Array(1 + encoded.length);
                     payload.set(encoded, 1);
                     try {
                         connection.send(payload);
@@ -83,16 +83,16 @@ class Peers extends Object3D {
     }
 
     connect({ id, initiator = false }) {
-        const {
+        var {
             listener,
             server,
             userMedia,
         } = this;
-        const connection = new SimplePeer({
+        var connection = new SimplePeer({
             initiator,
             stream: userMedia,
         });
-        const peer = new Peer({ peer: id, connection, listener });
+        var peer = new Peer({ peer: id, connection, listener });
         connection.on('error', () => {});
         connection.on('data', peer.onData.bind(peer));
         connection.on('signal', (signal) => (
@@ -118,23 +118,23 @@ class Peers extends Object3D {
     }
 
     join(peer) {
-        const { peers } = this;
+        var { peers } = this;
         peers.push(this.connect({ id: peer }));
     }
 
     leave(peer) {
-        const { peers } = this;
-        const index = peers.findIndex(({ peer: id }) => (id === peer));
+        var { peers } = this;
+        var index = peers.findIndex(({ peer: id }) => (id === peer));
         if (~index) {
-            const [peer] = peers.splice(index, 1);
+            var [peer] = peers.splice(index, 1);
             this.remove(peer);
             peer.dispose();
         }
     }
 
     signal({ peer, signal }) {
-        const { peers } = this;
-        const { connection } = peers[
+        var { peers } = this;
+        var { connection } = peers[
             peers.findIndex(({ peer: id }) => (id === peer))
         ] || {};
         if (connection && !connection.destroyed) {
@@ -148,7 +148,7 @@ class Peers extends Object3D {
     }
 
     reset() {
-        const { peers } = this;
+        var { peers } = this;
         peers.forEach((peer) => {
             this.remove(peer);
             peer.dispose();
