@@ -5,13 +5,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
-  "pre-commit": {
-    "run": "lint",
-    "silent": true
-  },
   "scripts": {
     "compile:protocol": "pbjs -t static-module -w es6 -o core/protocol.js --no-comments server/messages.proto",
-    "lint": "eslint --cache --ext .js server",
+    "lint": "eslint --cache --ext .js client server",
     "start": "cross-env CLIENT=true PRELOAD=10 SEED=1980 STORAGE=./data nodemon --watch server server/main.js"
   },
   "dependencies": {
