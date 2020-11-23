@@ -1,27 +1,27 @@
-const authService = 'https://blocks.gatunes.com/auth/';
+const authService = 'https://realmsroyal.obeyi.com/auth/';
 
 const leadingZero = (v) => (v.length < 2 ? `0${v}` : v);
 
 export const getUserSkin = (id) => (
-  `${authService}user/${id}/skin`
+    `${authService}user/${id}/skin`
 );
 
 export const fetchLocations = ({ server, user }) => {
-  let endpoint = 'locations';
-  if (server) {
-    endpoint = `server/${server}/locations`;
-  } else if (user) {
-    endpoint = `user/${user}/locations`;
-  }
-  return fetch(`${authService}${endpoint}`)
-    .then((res) => res.json())
-    .then((locations) => locations.map((location) => {
-      const createdAt = new Date(location.createdAt);
-      return {
-        ...location,
-        name: `x:${location.position.x} y:${location.position.y} z:${location.position.z}`,
-        date: (
-          `${createdAt.getFullYear()}/${leadingZero(`${createdAt.getMonth() + 1}`)}/${leadingZero(`${createdAt.getDate()}`)}`
+        let endpoint = 'locations';
+        if (server) {
+            endpoint = `server/${server}/locations`;
+        } else if (user) {
+            endpoint = `user/${user}/locations`;
+        }
+        return fetch(`${authService}${endpoint}`)
+            .then((res) => res.json())
+            .then((locations) => locations.map((location) => {
+                        const createdAt = new Date(location.createdAt);
+                        return {
+                            ...location,
+                            name: `x:${location.position.x} y:${location.position.y} z:${location.position.z}`,
+                            date: (
+                                    `${createdAt.getFullYear()}/${leadingZero(`${createdAt.getMonth() + 1}`)}/${leadingZero(`${createdAt.getDate()}`)}`
           + ` ${leadingZero(`${createdAt.getHours()}`)}:${leadingZero(`${createdAt.getMinutes()}`)}`
         ),
         link: `${authService}location/${location._id}`,
